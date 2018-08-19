@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+  <link href="https://fonts.googleapis.com/css?family=Baloo+Bhai" rel="stylesheet">
+
+</head>
+
+<body>
+  <section class="hero" style="background-color:#88ff4d;padding:50px 50px;text-align:center;">
+    <div class="container">
+      <div class="row">
+        <div class="col-sm-12">
+
+          <h1 class="title" style="font-family: 'Baloo Bhai', cursive;">
+            Your weather guide!
+
+          </h1>
+        </div>
+      </div>
+      <br>
+      {% if user.is_authenticated %}
+      <div class="row">
+        <div class="col-sm-5">
+          <p></p>
+        </div>
+        <div class="col-sm-2">
+          <a class="btn btn-default" href="javascript:{document.getElementById('logout').submit()}" style="background-color:#79589f;color:#fff;margin:3px;">Logout ( <strong>{{user.username|lower|title}}</strong> ) </a>
+          <form  id='logout' action="{% url 'logout' %}" method="POST">
+            {% csrf_token %}
+            <input type="hidden">
+          </form>
+        </div>
+        <div class="col-sm-5">
+          <p></p>
+        </div>
+      </div>
+
+      {% else %}
+      <div class="row">
+        <div class="col-sm-3">
+          <p></p>
+        </div>
+        <div class="col-sm-9">
+
+          <form class="form-inline" method="POST" action="{% url 'login' %}">
+            {% csrf_token %}
+            <input class="form-control mr-sm-2" type="text" placeholder="Enter Username" name='username' required>
+            <input class="form-control mr-sm-2" type="password" placeholder="Enter Password" name="password" required>
+            <button class="btn btn-primary" type="submit">Login</button>
+            <a class="btn btn-default" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo"  style="background-color:#79589f;color:#fff;margin:3px;">Sign Up</a>
+
+          </form>
+
+
+
+        </div>
+
+      </div>
+      {% endif %}
+
+
+
+    </div><br>
+    {% if messages %}
+
+      {% for message in messages %}
+      <p{% if message.tags %} class="alert alert-danger"{% endif %}>{{ message }}</p>
+      {% endfor %}
+
+    {% endif %}
+
+  </section>
+  <section class="section" style="margin:70px;text-align=:center">
+    <div class="container">
+      <div class="columns">
+        <div class="row">
+          <div class="col-sm-4">
+            <p></p>
+          </div>
+          {% if user.is_authenticated%}
+          <div class="col-sm-4">
+            <form method="POST" class="form-inline" >
+              {% csrf_token %}
+              {{form.name}}
+              <button type="submit" class="btn btn-primary">
+                Add City
+              </button>
+
+            </form>
+          </div>
+          {% else %}
+          <div class="col-sm-4">
+            <form class="form-inline" >
+              {% csrf_token %}
+              <input class="form-control" type="text" placeholder="Please Sign in to add city" readonly>
+              <a type="submit" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo" class="btn btn-primary" style="color:white;">Add City</a>
+
+
+            </form>
+          </div>
+          {% endif %}
+
+          <div class="col-sm-4">
+            <p></p>
+          </div>
+
+        </div>
+      </div>
+    </div><br><br>
+    <!--
+  </section>
+  <section class="section">
+  <div class="container">
+  <div class="row">
+  <div class="col-sm-4">
+  <p></p>
+</div>
+<div class="col-sm-4">
+{% for city_weather in weather_data%}
+<div class="container">
+
+<div class="card" style="width:250px">
+
+<div class="card-body border">
+<figure class="image is-50x50">
+<p><strong>{{ city_weather.city }}</strong>
+
+<img src="http://openweathermap.org/img/w/{{ city_weather.icon }}.png" alt="Image" ></p>
+</figure>
+<hr>
+<p>
+<strong><span class="subtitle">{{ city_weather.temperature }}</span></strong>° Celcius
+
+<br><br> <strong>{{ city_weather.description }}</strong>
+</p>
+
+</div>
+</div>
+</div>
+
+
+
+<br>
+
+
+{% endfor %}
+</div>
+<div class="col-sm-4">
+<p></p>
+</div>
+
+</div>
+
+</div>
+
+</section> -->
+
+<div class="row">
+  {% for city_weather in weather_data%}
+  <div class="col-lg-3 col-sm-6 col-xs-12">
+
+    <div class="container">
+
+      <div class="card" style="width:250px">
+
+        <div class="card-body border">
+          <figure class="image is-50x50">
+            <p><strong>{{ city_weather.city|lower|title }}</strong>
+
+              <img src="http://openweathermap.org/img/w/{{ city_weather.icon }}.png" alt="Image" ></p>
+            </figure>
+            <hr>
+            <p>
+              <strong><span class="subtitle">{{ city_weather.temperature|lower|title }}</span></strong>° Celcius
+
+              <br><br> <strong>{{ city_weather.description|lower|title }}</strong>
+            </p>
+
+            <!--<a href="#" data-toggle="modal" data-target="#delete" data-whatever="@mdo" class="btn btn-danger btn-sm">Delete</a>-->
+
+          </div>
+        </div>
+      </div>
+
+
+
+      <br>
+
+
+
+    </div>
+    {% if forloop.counter|divisibleby:4 %}
+  </div>
+  <div class="row">
+    {% endif %}
+    {% endfor %}
+  </div>
+</div>
+
+<!-- modal for delete -->
+<div class="modal fade" id="delete" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header" style="background:#ff704d;">
+        <h5 class="modal-title" id="exampleModalLabel" >Confirm Delete</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" >
+        <form method='POST' action="#">
+          {% csrf_token %}
+
+          <div class="form-group">
+            <label for="message-text" class="col-form-label">Do you wanna delete this city?</label>
+
+          </div>
+          <div class="modal-footer" >
+            <button type="button" class="btn btn-info" data-dismiss="modal" >Cancel</button>
+            <button type="submit" class="btn btn-danger">Delete</button>
+          </div>
+        </form>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+
+
+<!-- modal for signup -->
+
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header" style="background:#00e6e6;">
+        <h5 class="modal-title" id="exampleModalLabel" >Create an Account!</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" >
+        <form method='POST' action="{% url 'signup' %}">
+          {% csrf_token %}
+          <div class="row">
+            <div class="col-sm-6">
+              <div class="form-group">
+                <label for="recipient-name" class="col-form-label">Email:</label>
+                <input type="email" placeholder="Enter Email" class="form-control" id="email" name="email" required>
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div class="form-group">
+                <label for="recipient-name" class="col-form-label">Username:</label>
+                <input type="text" placeholder="Enter username" class="form-control" id="username" name="username" required>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="message-text" class="col-form-label">Password:</label>
+            <input type="password" placeholder="Enter Password" class="form-control" id="email" name="p1" required>
+          </div>
+          <div class="form-group">
+            <label for="message-text" class="col-form-label">Confirm Password:</label>
+            <input type="password" placeholder="Confirm Password" class="form-control" id="email" name="p2" required>
+          </div>
+          <div class="modal-footer" >
+            <button type="button" class="btn btn-secondary ml-20" data-dismiss="modal" >Close</button>
+            <button type="submit" class="btn btn-primary">Signup !</button>
+          </div>
+        </form>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+
+
+<hr>
+<section >
+  <footer class="text-muted" color="black">
+    <div class="container text-center">
+      <p class="float-right">
+        <a href="#">Back to top</a>
+      </p>
+      <p><button type="button" class="btn btn-default btn-sm">
+        &copy UnCopyright Milan Thapa {% now "Y"%}
+      </button></p>
+    </div>
+
+  </footer>
+</section>
+
+
+
+</body>
+
+
+
+</html>
